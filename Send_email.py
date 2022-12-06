@@ -8,6 +8,15 @@ import time
 import pandas as pd
 from dotenv import load_dotenv
 
+corrected_names = {
+    'Antenore Energia':'Antenore Energia SPA',
+    'GE.PA SSDARL - 20 HOURS':'GE.PA - 20 Hours SRL',
+    'Semplice Gas & Luce':'Semplice Gas & Luce SRL',
+    'ANYTIMESS FITNESS':'Anytime Fitness SRL',
+    'EGOSISTEMA':'Egosistema SPA',
+    'PALESTRE ITALIANE':'Palestre Italiane SRL',
+    'Energia Locale':'Energia Locale SRL'
+}
 def pause(massage = 'press any key to continue'):  # this function will pause the script with a default massage or a custome one.
     print(massage)
     os.system('pause')  # this will pause untill any key is pressed.
@@ -27,6 +36,7 @@ csv_name = os.environ.get('csv_name')
 csv_string = r"{}".format(f'{my_dir}\Settingss\{csv_name}')
 csv = pd.read_csv(csv_string, sep=';')
 dt = pd.DataFrame(csv)
+dt['Azienda Creditrice']=dt['Azienda Creditrice'].replace(corrected_names)
 print(dt.head())
 
 #attaches can be any files, can be a list
@@ -118,8 +128,6 @@ while i < max:
     
     pdf = dt_row['Codice Debitore']
     azienda = str(dt_row['Azienda Creditrice'])
-    if(azienda.find("Semplice Gas & Luce") != -1):
-        azienda = "Semplice Gas & Luce SRL"
     s = f'Pratica {azienda} {pdf}'
     
     html = f"""
